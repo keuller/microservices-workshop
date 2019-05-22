@@ -1,12 +1,10 @@
 package br.com.accenture.wallet.customer.controller;
 
-import br.com.accenture.wallet.customer.domain.Customer;
 import br.com.accenture.wallet.customer.domain.CustomerModel;
 import br.com.accenture.wallet.customer.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 
@@ -14,7 +12,7 @@ import java.util.List;
 @RequestMapping("/v1/customers")
 public class CustomerController {
 
-    private CustomerService service;
+    private final CustomerService service;
 
     @Autowired
     public CustomerController(CustomerService service) {

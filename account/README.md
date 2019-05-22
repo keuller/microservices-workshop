@@ -23,3 +23,15 @@ GET | /v1/accounts/{id}/customer | Obtem os dados do cliente associado a conta
 POST | /v1/accounts | Cria uma nova conta
 PUT | /v1/accounts/{id} | Atualiza os dados de uma determinada conta pelo ID
 DELETE | /v1/accounts/{id} | Remove uma determinada conta pelo ID
+
+### Estrutura da Tabela
+
+Tabela: *accounts*
+
+Campo|Tipo
+-----|----
+account_id | VARCHAR
+customer_id | VARCHAR
+type | Int64
+active | bool
+created_at| Date

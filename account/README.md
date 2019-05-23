@@ -12,6 +12,12 @@ docker run --rm --name=account-db -e POSTGRES_USERNAME=postgres -e POSTGRES_PASS
 mvn clean compile spring-boot:run
 ```
 
+### Acessando o Serviço
+
+```bash
+http://localhost:8181/v1/accounts
+```
+
 ### Endpoints do Serviço
 
 Verbo | URI | Descrição

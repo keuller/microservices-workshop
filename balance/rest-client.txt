@@ -1,2 +1,16 @@
 
 GET http://localhost:8282/v1/balances
+
+###
+
+GET http://localhost:8282/v1/balances/bd33dbce-cd32-4676-a7ce-854a36fc515b/account
+
+### 
+
+POST http://localhost:8282/v1/balances
+Content-Type: application/json
+
+{
+    "account": "bd33dbce-cd32-4676-a7ce-854a36fc515b",
+    "customer": "0e7ab678-22b1-4a43-be97-811279eac10d"
+}

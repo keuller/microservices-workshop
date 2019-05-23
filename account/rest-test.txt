@@ -1,38 +1,27 @@
 ###
 
-GET http://localhost:8080/v1/accounts
+GET http://localhost:8181/v1/accounts
 
 ###
 
-POST http://localhost:8080/v1/customers
+POST http://localhost:8181/v1/accounts
 Content-Type: application/json
 
 {
-    "name": "Abdoral Gusmao",
-    "email": "abdoragusmao@gmail.com",
-    "gender": "male",
-    "birthday": "15/09/1990"
+    "customer": "0e7ab678-22b1-4a43-be97-811279eac10d",
+    "type": "payment",
+    "active": "true"
 }
 
 ###
 
-GET http://localhost:8080/v1/customers/208bc09d-c94c-4efd-8346-0ab26e4fb733
-
-###
-
-PUT http://localhost:8080/v1/customers/0fc47aba-749a-4c13-b3e8-2e943f34d832
-Content-Type: application/json
-
-{
-    "name": "Abdoral Gusmao Santos",
-    "email": "abdoragusmao@gmail.com",
-    "birthday": "15/09/1989"
-}
+GET http://localhost:8181/v1/accounts/bd33dbce-cd32-4676-a7ce-854a36fc515b
 
 ### 
 
-DELETE http://localhost:8080/v1/customers/0611db48-ec01-4609-8c03-1fdd4b2bd6a2
+DELETE http://localhost:8181/v1/accounts/6ba92c37-de25-40d9-8b97-881077408d48
 
 ###
 
-GET http://localhost:8080/v1/customers/find?email=abdoragusmao@gmail
+GET http://localhost:8181/v1/accounts/bd33dbce-cd32-4676-a7ce-854a36fc515b/customer
+

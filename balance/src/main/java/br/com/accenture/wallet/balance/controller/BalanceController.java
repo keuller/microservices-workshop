@@ -4,12 +4,14 @@ import br.com.accenture.wallet.balance.domain.BalanceModel;
 import br.com.accenture.wallet.balance.service.BalanceService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.*;
+import io.micronaut.validation.Validated;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import java.util.Optional;
 
+@Validated
 @Controller("/v1/balances")
 public class BalanceController {
 
@@ -30,6 +32,13 @@ public class BalanceController {
         Optional<BalanceModel> model = service.getByAccount(id);
         if (model.isPresent()) return HttpResponse.ok(model.get());
         return HttpResponse.notFound();
+    }
+
+    @Post
+    public HttpResponse<BalanceModel> create(@Body @Valid BalanceModel model) {
+        Optional<BalanceModel> balance = service.create(model);
+        if (balance.isPresent()) return HttpResponse.created(balance.get());
+        return HttpResponse.badRequest();
     }
 
 }

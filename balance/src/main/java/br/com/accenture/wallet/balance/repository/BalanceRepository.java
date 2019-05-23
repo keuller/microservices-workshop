@@ -30,4 +30,14 @@ public class BalanceRepository {
         }
     }
 
+    @Transactional
+    public Optional<Balance> save(Balance bean) {
+        try {
+            manager.persist(bean);
+            return Optional.of(bean);
+        } catch (EntityExistsException ex) {
+            return Optional.empty();
+        }
+    }
+
 }

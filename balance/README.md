@@ -37,3 +37,7 @@ account_id | VARCHAR
 value | double
 last_transaction | VARCHAR
 last_update| timestamp
+
+```
+PS. Esse serviço foi criando utilizando o framework Micronaut v1.1.2.
+```

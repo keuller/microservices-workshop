@@ -24,4 +24,11 @@ public class BalanceService {
         return Optional.of(new BalanceModel().fromEntity(balance.get()));
     }
 
+    public Optional<BalanceModel> create(BalanceModel model) {
+        model.setValue(0.0d);
+        Optional<Balance> balance = repository.save(model.toEntity());
+        if (balance.isEmpty()) Optional.empty();
+        return Optional.of(new BalanceModel().fromEntity(balance.get()));
+    }
+
 }

@@ -1,0 +1,5 @@
+profile: service
+defaultPackage: balance
+---
+testFramework: junit
+sourceLanguage: java

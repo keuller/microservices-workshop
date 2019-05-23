@@ -1,4 +1,4 @@
-package balance.domain;
+package br.com.accenture.wallet.balance.domain;
 
 import javax.persistence.*;
 import java.util.*;

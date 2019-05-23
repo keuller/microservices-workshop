@@ -37,10 +37,10 @@ public class CustomerService {
         repository.deleteById(id);
     }
 
-    public CustomerModel findById(String value) {
+    public Optional<CustomerModel> findById(String value) {
         Optional<Customer> customer = repository.findById(value);
-        if (customer.isEmpty()) return null;
-        return new CustomerModel("", "").fromEntity(customer.get());
+        if (customer.isEmpty()) return Optional.empty();
+        return Optional.of(new CustomerModel("", "").fromEntity(customer.get()));
     }
 
     public List<CustomerModel> findAll() {

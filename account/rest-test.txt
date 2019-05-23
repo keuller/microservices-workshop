@@ -1,0 +1,27 @@
+###
+
+GET http://localhost:8181/v1/accounts
+
+###
+
+POST http://localhost:8181/v1/accounts
+Content-Type: application/json
+
+{
+    "customer": "0e7ab678-22b1-4a43-be97-811279eac10d",
+    "type": "payment",
+    "active": "true"
+}
+
+###
+
+GET http://localhost:8181/v1/accounts/bd33dbce-cd32-4676-a7ce-854a36fc515b
+
+### 
+
+DELETE http://localhost:8181/v1/accounts/6ba92c37-de25-40d9-8b97-881077408d48
+
+###
+
+GET http://localhost:8181/v1/accounts/bd33dbce-cd32-4676-a7ce-854a36fc515b/customer
+

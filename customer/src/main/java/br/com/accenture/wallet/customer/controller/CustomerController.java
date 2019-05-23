@@ -2,11 +2,12 @@ package br.com.accenture.wallet.customer.controller;
 
 import br.com.accenture.wallet.customer.domain.CustomerModel;
 import br.com.accenture.wallet.customer.service.CustomerService;
+import br.com.accenture.wallet.customer.service.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/v1/customers")
@@ -27,15 +28,17 @@ public class CustomerController {
 
     @GetMapping("/{id}")
     public CustomerModel findById(@PathVariable String id) {
-        return service.findById(id);
+        Optional<CustomerModel> model = service.findById(id);
+        if (model.isEmpty()) throw new ResourceNotFoundException("Customer");
+        return model.get();
     }
 
     @GetMapping("/find")
     public CustomerModel findByEmail(@RequestParam("email") String email) {
-        if (!"".equals(email)) {
-            return service.findByEmail(email);
-        }
-        return null;
+        CustomerModel result = null;
+        if (!"".equals(email)) result = service.findByEmail(email);
+        if (Objects.isNull(result)) throw new ResourceNotFoundException("Customer", email);
+        return result;
     }
 
     @PutMapping("/{id}")

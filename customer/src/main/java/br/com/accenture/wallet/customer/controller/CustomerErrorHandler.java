@@ -1,18 +1,17 @@
 package br.com.accenture.wallet.customer.controller;
 
 import br.com.accenture.wallet.customer.service.ResourceNotFoundException;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import java.util.Optional;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @ControllerAdvice
 public class CustomerErrorHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<FailModel> resourceNotFound(ResourceNotFoundException ex) {
-        final FailModel fail = new FailModel("fail", ex.getMessage());
-        return ResponseEntity.of(Optional.of(fail)).notFound().build();
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public FailModel resourceNotFound(ResourceNotFoundException ex) {
+        return new FailModel("fail", ex.getMessage());
     }
 
     class FailModel {
@@ -25,9 +24,17 @@ public class CustomerErrorHandler {
             this.message = msg;
         }
 
-        public int getCode() { return code; }
-        public String getType() { return type; }
-        public String getMessage() { return message; }
+        public int getCode() {
+            return code;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public String getMessage() {
+            return message;
+        }
     }
 
 }

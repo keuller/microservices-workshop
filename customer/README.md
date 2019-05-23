@@ -22,11 +22,12 @@ http://localhost:8080/v1/customers
 
 Verbo|URI|Descrição
 -----|---|---------
-GET|/v1/customers|Obtem a lista de clientes.
-GET|/v1/customers/{id}|Obtem os dados do cliente com ID especificado
-GET|/v1/customers/find?email=[email]|Obtem os dados do cliente através do **email**
-POST|/v1/customers|Cria um novo cliente.
-DELETE|v1/customers/{id}|Remove um determinado cliente pelo ID.
+**GET**|/v1/customers|Obtem a lista de clientes.
+**GET**|/v1/customers/{id}|Obtem os dados do cliente com ID especificado
+**GET**|/v1/customers/find?email=[email]|Obtem os dados do cliente através do **email**
+**POST**|/v1/customers|Cria um novo cliente.
+**PUT**|/v1/customers/{id}|Atualiza os dados do cliente pelo ID especificado.
+**DELETE**|v1/customers/{id}|Remove um determinado cliente pelo ID.
 
 ### Estrutura da Tabela
 

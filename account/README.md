@@ -20,7 +20,6 @@ GET | /v1/accounts | Obtem uma lista de todas as 10 contas
 GET | /v1/accounts/{id} | Obtem os dados da conta com ID especificado
 GET | /v1/accounts/{id}/customer | Obtem os dados do cliente associado a conta
 POST | /v1/accounts | Cria uma nova conta
-PUT | /v1/accounts/{id} | Atualiza os dados de uma determinada conta pelo ID
 DELETE | /v1/accounts/{id} | Remove uma determinada conta pelo ID
 
 ### Estrutura da Tabela
@@ -34,3 +33,7 @@ customer_id | VARCHAR
 type | Int4
 active | boolean
 created_at| timestamp
+
+```
+PS. Este serviço tem relação com Customer Service
+```

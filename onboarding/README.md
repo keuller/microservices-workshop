@@ -1,12 +1,8 @@
 ## Onboarding Service
 
-### Executando Postgres localmente
+O serviço de Onboarding realiza composição dos demais serviços: *Customer*, *Account* e *Balance*. Certifique-se que todos os serviços estejam funcionais.
 
-```bash
-docker run --rm --name=wallet-db -e POSTGRES_USERNAME=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 postgres
-```
-
-### Executando servico localmente
+### Executando serviço localmente
 
 ```bash
 mvn clean compile spring-boot:run
@@ -18,7 +14,7 @@ mvn clean compile spring-boot:run
 http://localhost:7000/v1/onboarding
 ```
 
-### Endpoints do Serviço
+### Endpoint do Serviço
 
 Verbo | URI | Descrição
 -----|----|---

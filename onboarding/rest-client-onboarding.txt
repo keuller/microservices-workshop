@@ -1,0 +1,7 @@
+POST http://localhost:7000/v1/onboarding
+Content-Type: application/json
+
+{
+    "name": "Eduardo Magalhaes",
+    "email": "dudu.borges.magalhaes@outlook.com"
+}

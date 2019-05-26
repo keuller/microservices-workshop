@@ -23,11 +23,9 @@ class CustomerService(val repository: CustomerRepository) {
         repository.deleteById(id)
     }
 
-    fun update(model: CustomerBean): CustomerBean? {
-        val customer = repository.findById(model.id)
-        if (customer.isEmpty) return null
-        repository.save(model.toEntity())
-        return model
+    fun update(bean: CustomerBean): CustomerBean? {
+        val customer = repository.findById(bean.id)
+        return if (customer.isEmpty) return null else bean.fromEntity(repository.save(bean.toEntity()))
     }
 
     fun findById(value: String): Optional<CustomerBean> {

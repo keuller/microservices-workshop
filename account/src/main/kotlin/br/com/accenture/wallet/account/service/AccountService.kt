@@ -33,7 +33,7 @@ class AccountService(val repository: AccountRepository) {
 
     fun create(model: AccountBean): AccountBean? {
         val customer = findCustomer(model.customer)
-        if (customer.isEmpty()) return null
+        if (customer.isEmpty) return null
         logger.info("Criando uma conta para o cliente " + customer.get().name)
         val account = repository.save(model.toEntity())
         model.id = account.id

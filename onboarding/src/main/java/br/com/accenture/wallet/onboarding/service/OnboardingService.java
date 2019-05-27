@@ -9,8 +9,11 @@ import static org.springframework.beans.factory.config.ConfigurableBeanFactory.S
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.*;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @Scope(SCOPE_SINGLETON)
@@ -35,13 +38,16 @@ public class OnboardingService {
         this.client = new RestTemplateBuilder().build();
     }
 
-    public void create(CustomerModel model) {
+    @Async
+    public CompletableFuture<String> create(CustomerModel model) {
         try {
             final CustomerModel customer = createCustomer(model.getName(), model.getEmail());
             final AccountModel account = createAccount(customer);
             createBalance(account);
+            return CompletableFuture.completedFuture(account.getId());
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
+            return CompletableFuture.failedFuture(ex);
         }
     }
 

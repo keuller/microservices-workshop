@@ -5,10 +5,12 @@ import br.com.accenture.wallet.account.domain.CustomerModel;
 import br.com.accenture.wallet.account.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/v1/accounts")
@@ -33,19 +35,20 @@ public class AccountController {
         return account.get();
     }
 
+    @Async
     @GetMapping("/{id}/customer")
-    public CustomerModel getAccountCustomer(@PathVariable String id) {
+    public CompletableFuture<CustomerModel> getAccountCustomer(@PathVariable String id) {
         Optional<AccountModel> account = service.getById(id);
         if (account.isPresent()) {
-            Optional<CustomerModel> customer = service.findCustomer(account.get().getCustomer());
-            return customer.get();
+            return service.findCustomer(account.get().getCustomer());
         }
         return null;
     }
 
+    @Async
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AccountModel create(@RequestBody AccountModel model) {
+    public CompletableFuture<AccountModel> create(@RequestBody AccountModel model) {
         return service.create(model);
     }
 

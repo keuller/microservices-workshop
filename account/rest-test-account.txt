@@ -24,4 +24,3 @@ DELETE http://localhost:8181/v1/accounts/6ba92c37-de25-40d9-8b97-881077408d48
 ###
 
 GET http://localhost:8181/v1/accounts/bd33dbce-cd32-4676-a7ce-854a36fc515b/customer
-

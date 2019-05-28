@@ -2,17 +2,26 @@ package br.com.accenture.wallet.account.service;
 
 import br.com.accenture.wallet.account.domain.*;
 import br.com.accenture.wallet.account.repository.AccountRepository;
+import net.jodah.failsafe.Failsafe;
+import net.jodah.failsafe.RetryPolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.annotation.ApplicationScope;
+import java.net.ConnectException;
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
 import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_SINGLETON;
 
 @Service
@@ -40,13 +49,15 @@ public class AccountService {
             .collect(Collectors.toList());
     }
 
-    public AccountModel create(AccountModel model) {
-        Optional<CustomerModel> customer = findCustomer(model.getCustomer());
-        if (customer.isEmpty()) return null;
-        logger.info("Criando uma conta para o cliente ".concat(customer.get().getName()));
-        final Account account = accountRepository.save(model.toEntity());
-        model.setId(account.getId());
-        return model;
+    @Async
+    public CompletableFuture<AccountModel> create(AccountModel model) {
+        return findCustomer(model.getCustomer()).thenApply(customer -> {
+            if (isNull(customer)) return null;
+            logger.info("Criando uma conta para o cliente ".concat(customer.getName()));
+            final Account account = accountRepository.save(model.toEntity());
+            model.setId(account.getId());
+            return model;
+        });
     }
 
     public Optional<AccountModel> getById(String value) {
@@ -59,16 +70,20 @@ public class AccountService {
         accountRepository.deleteById(accountId);
     }
 
-    public Optional<CustomerModel> findCustomer(String id) {
-        try {
-            CustomerModel customer = customerClient
-                .getForEntity(customerServiceUrl.concat(id), CustomerModel.class)
-                .getBody();
-            return Optional.of(customer);
-        } catch (Exception ex) {
-            logger.error(ex.getMessage());
-            return Optional.empty();
-        }
+    @Async
+    public CompletableFuture<CustomerModel> findCustomer(String id) {
+        return Failsafe.with(retryPolicy(id))
+            .getAsync(() -> customerClient.getForEntity(customerServiceUrl.concat(id), CustomerModel.class).getBody())
+            .exceptionally(err -> null);
+    }
+
+    @SuppressWarnings("unchecked")
+    private RetryPolicy<Object> retryPolicy(final String id) {
+        return new RetryPolicy<>()
+            .handle(ConnectException.class, RestClientException.class)
+            .withMaxRetries(5)
+            .withDelay(Duration.ofMillis(750))
+            .onFailedAttempt(obj -> logger.error("Fail to get info from Customer with ID ".concat(id)));
     }
 
 }

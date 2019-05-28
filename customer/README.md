@@ -40,3 +40,13 @@ name | VARCHAR
 email | VARCHAR
 gender|int4
 birth_day|timestamp
+
+### Load Testing
+
+Para executar o teste de carga no microserviço, usamos a ferramenta [locust.io](https://locust.io). Para executar basta instalar localmente o Locust (precisa do Python/PIP instalado localmente).
+
+```bash
+$ locust -f locustfile.py
+```
+
+O servidor será iniciado localmente na port 8089. Basta apontar o navegador para `http://localhost:8089` e executar seus testes.

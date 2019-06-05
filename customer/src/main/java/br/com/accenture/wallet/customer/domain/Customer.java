@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name="customers")
+@Table(schema="customer", name="customers")
 public class Customer implements java.io.Serializable {
     public static long serialVersionUID = 723839847562845L;
 

@@ -5,7 +5,6 @@ import br.com.accenture.wallet.customer.domain.CustomerModel;
 import br.com.accenture.wallet.customer.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -20,7 +19,7 @@ public class CustomerService {
     }
 
     public CustomerModel create(final CustomerModel model) {
-        Customer customer = new Customer();
+        final Customer customer = new Customer();
         model.setId(customer.getId());
         repository.save(model.toEntity());
         return model;
@@ -40,20 +39,19 @@ public class CustomerService {
     public Optional<CustomerModel> findById(String value) {
         Optional<Customer> customer = repository.findById(value);
         if (customer.isEmpty()) return Optional.empty();
-        return Optional.of(new CustomerModel("", "").fromEntity(customer.get()));
+        return Optional.of(CustomerModel.fromEntity(customer.get()));
     }
 
     public List<CustomerModel> findAll() {
-        return repository.findAll()
-            .stream()
-            .map(customer -> new CustomerModel("", "").fromEntity(customer))
+        return repository.findAll().stream()
+            .map(CustomerModel::fromEntity)
             .collect(Collectors.toList());
     }
 
     public CustomerModel findByEmail(String value) {
         final Optional<Customer> customer = repository.findByEmail(value);
         if (customer.isEmpty()) return null;
-        return new CustomerModel("", "").fromEntity(customer.get());
+        return CustomerModel.fromEntity(customer.get());
     }
 
 }

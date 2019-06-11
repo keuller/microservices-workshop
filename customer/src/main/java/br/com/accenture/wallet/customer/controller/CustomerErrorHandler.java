@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.*;
 @ControllerAdvice
 public class CustomerErrorHandler {
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ResourceNotFoundException.class)
     public FailModel resourceNotFound(ResourceNotFoundException ex) {
         return new FailModel("fail", ex.getMessage());
     }

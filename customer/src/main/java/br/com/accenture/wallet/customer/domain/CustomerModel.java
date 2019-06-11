@@ -10,7 +10,7 @@ import static java.util.Objects.isNull;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CustomerModel {
-    private volatile DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+    private static volatile DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
     private String id;
 
@@ -26,6 +26,11 @@ public class CustomerModel {
 
     private String birthday;
 
+    public CustomerModel() {
+        this.name = "";
+        this.email = "";
+    }
+
     public CustomerModel(String name, String email) {
         this.name = name;
         this.email = email;
@@ -34,7 +39,6 @@ public class CustomerModel {
     public String getId() {
         return id;
     }
-
     public CustomerModel setId(String id) {
         this.id = id;
         return this;
@@ -43,7 +47,6 @@ public class CustomerModel {
     public String getName() {
         return name;
     }
-
     public CustomerModel setName(String name) {
         this.name = name;
         return this;
@@ -61,7 +64,6 @@ public class CustomerModel {
     public String getGender() {
         return gender;
     }
-
     public CustomerModel setGender(String gender) {
         this.gender = gender;
         return this;
@@ -70,14 +72,14 @@ public class CustomerModel {
     public String getBirthday() {
         return birthday;
     }
-
     public CustomerModel setBirthday(String birthday) {
         this.birthday = birthday;
         return this;
     }
 
-    public CustomerModel fromEntity(Customer bean) {
-        return setId(bean.getId())
+    public static CustomerModel fromEntity(Customer bean) {
+        final CustomerModel model = new CustomerModel();
+        return model.setId(bean.getId())
             .setName(bean.getName())
             .setEmail(bean.getEmail())
             .setGender(toGender(bean.getGender()))
@@ -86,15 +88,15 @@ public class CustomerModel {
 
     public Customer toEntity() {
         final Customer customer = new Customer()
+            .setId(id)
             .setName(name)
-            .setEmail(email);
-        if (nonNull(id) && !"".equals(id)) customer.setId(id);
-        if (nonNull(birthday) && !"".equals(birthday)) customer.setBirthday(toBirthday(birthday));
-        if (nonNull(gender) && !"".equals(gender)) customer.setGender(toGender(gender));
+            .setEmail(email)
+            .setBirthday(toBirthday(birthday))
+            .setGender(toGender(gender));
         return customer;
     }
 
-    private String toGender(Integer value) {
+    private static String toGender(Integer value) {
         if (isNull(value)) return null;
         switch(value) {
             case 1: return "male";
@@ -126,7 +128,7 @@ public class CustomerModel {
         }
     }
 
-    private String toBirthday(Date value) {
+    private static String toBirthday(Date value) {
         if (isNull(value)) return null;
         return df.format(value);
     }

@@ -1,6 +1,8 @@
 HELP.md
 /target/
 !.mvn/wrapper/maven-wrapper.jar
+build.sh
+**/bootstrap.yml
 
 ### STS ###
 .apt_generated

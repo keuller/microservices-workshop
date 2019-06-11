@@ -2,6 +2,8 @@ package br.com.accenture.wallet.customer.domain;
 
 import javax.persistence.*;
 import java.util.*;
+import static java.util.Objects.nonNull;
+import static java.util.Objects.isNull;
 
 @Entity
 @Table(schema="customer", name="customers")
@@ -29,7 +31,7 @@ public class Customer implements java.io.Serializable {
     }
 
     public Customer setId(String id) {
-        this.id = id;
+        if (nonNull(id) && !"".equals(id)) this.id = id;
         return this;
     }
 
@@ -54,26 +56,26 @@ public class Customer implements java.io.Serializable {
     public Integer getGender() {
         return gender;
     }
-
     public Customer setGender(Integer gender) {
-        this.gender = gender;
+        if (nonNull(gender) && !"".equals(gender))
+            this.gender = gender;
         return this;
     }
 
     public Date getBirthday() {
         return birthday;
     }
-
     public Customer setBirthday(Date birthday) {
-        this.birthday = birthday;
+        if (nonNull(birthday) && !"".equals(birthday))
+            this.birthday = birthday;
         return this;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (Objects.isNull(obj)) return false;
-        boolean isSameClass = (obj instanceof Customer);
-        if (!isSameClass) return false;
+        if (isNull(obj) || !obj.getClass().isAssignableFrom(Customer.class)) {
+            return false;
+        }
         final Customer bean = (Customer) obj;
         return bean.getId().equals(this.id);
     }

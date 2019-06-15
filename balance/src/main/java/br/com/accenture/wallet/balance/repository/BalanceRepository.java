@@ -40,4 +40,14 @@ public class BalanceRepository {
         }
     }
 
+    @Transactional
+    public Optional<Balance> update(Balance bean) {
+        try {
+            manager.merge(bean);
+            return Optional.of(bean);
+        } catch (EntityExistsException ex) {
+            return Optional.empty();
+        }
+    }
+
 }

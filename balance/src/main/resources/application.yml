@@ -19,6 +19,7 @@ jpa:
       - 'br.com.accenture.wallet.balance.domain'
     properties:
       hibernate:
+        default_schema: balance
         hbm2ddl:
           auto: update
         show_sql: true

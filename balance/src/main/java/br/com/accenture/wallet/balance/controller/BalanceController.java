@@ -1,5 +1,6 @@
 package br.com.accenture.wallet.balance.controller;
 
+import br.com.accenture.wallet.balance.domain.BalanceChangeModel;
 import br.com.accenture.wallet.balance.domain.BalanceModel;
 import br.com.accenture.wallet.balance.service.BalanceService;
 import io.micronaut.http.HttpResponse;
@@ -41,4 +42,9 @@ public class BalanceController {
         return HttpResponse.badRequest();
     }
 
+    @Put
+    public HttpResponse<String> update(@Body @Valid BalanceChangeModel model) {
+        service.updateBalance(model);
+        return HttpResponse.ok("Balance updated.");
+    }
 }

@@ -4,10 +4,10 @@ import javax.validation.constraints.NotBlank;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Objects;
+import static java.util.Objects.nonNull;
 
 public class BalanceModel {
-    private volatile DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+    private static volatile DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
     private String id;
     private Double value;
@@ -25,7 +25,6 @@ public class BalanceModel {
     public String getId() {
         return id;
     }
-
     public BalanceModel setId(String id) {
         this.id = id;
         return this;
@@ -59,25 +58,26 @@ public class BalanceModel {
         return this;
     }
 
-    public BalanceModel fromEntity(final Balance bean) {
-        this.setId(bean.getId())
+    public static BalanceModel fromEntity(final Balance bean) {
+        final BalanceModel model = new BalanceModel();
+        model.setId(bean.getId())
             .setAccount(bean.getAccountId())
             .setCustomer(bean.getCustomerId())
             .setValue(bean.getValue())
             .setLastUpdate(toLastUpdate(bean.getLastUpdate()));
-        return this;
+        return model;
     }
 
     public Balance toEntity() {
         final Balance balance = new Balance();
-        if (Objects.nonNull(id) && !"".equals(id)) balance.setId(id);
+        if (nonNull(id) && !"".equals(id)) balance.setId(id);
         balance.setAccountId(account)
             .setCustomerId(customer)
             .setValue(value);
         return balance;
     }
 
-    private String toLastUpdate(Date value) {
+    private static String toLastUpdate(Date value) {
         return df.format(value);
     }
 

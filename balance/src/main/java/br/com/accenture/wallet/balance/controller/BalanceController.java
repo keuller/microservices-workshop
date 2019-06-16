@@ -10,6 +10,7 @@ import io.micronaut.validation.Validated;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Validated
@@ -24,8 +25,8 @@ public class BalanceController {
     }
 
     @Get
-    public HttpStatus all() {
-        return HttpStatus.OK;
+    public HttpResponse<List<BalanceModel>> all() {
+        return HttpResponse.ok(service.getTop5Balances());
     }
 
     @Get("/{id}/account")

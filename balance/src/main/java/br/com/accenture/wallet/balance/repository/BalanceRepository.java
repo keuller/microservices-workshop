@@ -6,7 +6,9 @@ import io.micronaut.spring.tx.annotation.Transactional;
 
 import javax.inject.Singleton;
 import javax.persistence.*;
+import java.util.List;
 import java.util.Optional;
+import java.util.Date;
 
 @Singleton
 public class BalanceRepository {
@@ -30,6 +32,13 @@ public class BalanceRepository {
         }
     }
 
+    @Transactional(readOnly = true)
+    public List<Balance> findTop5() {
+        TypedQuery<Balance> query = manager.createQuery("SELECT b FROM Balance b ORDER BY b.accountId", Balance.class)
+            .setMaxResults(5);
+        return query.getResultList();
+    }
+
     @Transactional
     public Optional<Balance> save(Balance bean) {
         try {
@@ -43,6 +52,7 @@ public class BalanceRepository {
     @Transactional
     public Optional<Balance> update(Balance bean) {
         try {
+            bean.setLastUpdate(new Date());
             manager.merge(bean);
             return Optional.of(bean);
         } catch (EntityExistsException ex) {

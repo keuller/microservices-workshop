@@ -14,3 +14,19 @@ Content-Type: application/json
     "account": "bd33dbce-cd32-4676-a7ce-854a36fc515b",
     "customer": "0e7ab678-22b1-4a43-be97-811279eac10d"
 }
+
+POST http://localhost:8282/v1/balances
+Content-Type: application/json
+
+{
+    "account": "37a4e5b2-9d78-4302-a4a9-15420506f3e2",
+    "customer": "9y67z3iq-b122-33h7-be97-001279tga18f"
+}
+
+POST http://localhost:8282/v1/balances
+Content-Type: application/json
+
+{
+    "account": "YWJjMTIz-9d78-d3nk-a4a9-cmhuMTI04fas",
+    "customer": "ma2v43ik-c321-33h7-be97-6w1279tuja47"
+}

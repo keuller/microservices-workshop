@@ -7,7 +7,9 @@ import br.com.accenture.wallet.balance.repository.BalanceRepository;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Named
 public class BalanceService {
@@ -23,6 +25,12 @@ public class BalanceService {
         Optional<Balance> balance = repository.findByAccount(accountId);
         if (balance.isEmpty()) return Optional.empty();
         return Optional.of(BalanceModel.fromEntity(balance.get()));
+    }
+
+    public List<BalanceModel> getTop5Balances() {
+        return repository.findTop5().stream()
+            .map(BalanceModel::fromEntity)
+            .collect(Collectors.toList());
     }
 
     public Optional<BalanceModel> create(BalanceModel model) {

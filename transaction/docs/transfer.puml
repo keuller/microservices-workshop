@@ -1,0 +1,34 @@
+@startuml
+actor User
+participant Controller
+entity Aggregate
+participant Service
+participant Saga
+boundary Balance
+
+autonumber
+User -> Controller: [POST] /transfer
+Controller -> Controller: validates de input
+Controller -> Aggregate: send command "TransferRequest"
+Aggregate -[#A9A9A9]>> Saga: dispatch an event\n "TransferRequestedEvent"
+Saga -> Saga: start trasfer
+Saga -> Aggregate: send command "Withdrawn"
+Aggregate -> Balance: get balance from source account
+Aggregate -> Aggregate: validate source account balance
+Aggregate -> Balance: update balance
+Aggregate -> Service: register transaction
+Aggregate -[#A9A9A9]>> Saga: dispatch an event\n "WithdrawnEvent"
+
+Saga -> Aggregate: send command "Deposit"
+Aggregate -> Balance: update balance
+Aggregate -> Service: register transaction
+Aggregate -[#A9A9A9]->> Saga: dispatch an event\n"DepositEvent"
+
+Saga -> Aggregate: send command "TransferComplete"
+Aggregate -[#A9A9A9]->> Saga: dispatch an event\n"TransferCompletedEvent"
+Saga -> Saga: end transfer
+Aggregate -[#A9A9A9]->> Aggregate: delete aggregate
+
+Aggregate --> Controller: "Transfer ID"
+Controller --> User
+@enduml

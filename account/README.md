@@ -38,6 +38,8 @@ account_id | VARCHAR
 customer_id | VARCHAR
 type | Int4
 active | boolean
+balance | float64
+transaction_limit| float64
 created_at| timestamp
 
 ```

@@ -55,7 +55,6 @@ public class CustomerModel {
     public String getEmail() {
         return email;
     }
-
     public CustomerModel setEmail(String email) {
         this.email = email;
         return this;

@@ -6,7 +6,7 @@ import static java.util.Objects.nonNull;
 import static java.util.Objects.isNull;
 
 @Entity
-@Table(schema="customer", name="customers")
+@Table(name="customers")
 public class Customer implements java.io.Serializable {
     public static long serialVersionUID = 723839847562845L;
 
@@ -29,7 +29,6 @@ public class Customer implements java.io.Serializable {
     public String getId() {
         return id;
     }
-
     public Customer setId(String id) {
         if (nonNull(id) && !"".equals(id)) this.id = id;
         return this;
@@ -38,7 +37,6 @@ public class Customer implements java.io.Serializable {
     public String getName() {
         return name;
     }
-
     public Customer setName(String name) {
         this.name = name;
         return this;
@@ -47,7 +45,6 @@ public class Customer implements java.io.Serializable {
     public String getEmail() {
         return email;
     }
-
     public Customer setEmail(String email) {
         this.email = email;
         return this;

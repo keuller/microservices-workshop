@@ -4,9 +4,6 @@ import javax.validation.constraints.NotBlank;
 import static java.util.Objects.nonNull;
 
 public class AccountModel {
-    private final String PAYMENT = "payment";
-    private final String ESCROW = "escrow";
-
     private String id;
 
     @NotBlank
@@ -23,7 +20,6 @@ public class AccountModel {
     public String getId() {
         return id;
     }
-
     public AccountModel setId(String id) {
         this.id = id;
         return this;
@@ -32,7 +28,6 @@ public class AccountModel {
     public String getType() {
         return type;
     }
-
     public AccountModel setType(String type) {
         this.type = type;
         return this;
@@ -50,7 +45,7 @@ public class AccountModel {
         return this;
     }
 
-    public AccountModel fromEntity(Account bean) {
+    public static AccountModel fromEntity(Account bean) {
         final AccountModel model = new AccountModel();
         model.setId(bean.getId())
             .setActive(bean.isActive())
@@ -60,25 +55,25 @@ public class AccountModel {
     }
 
     public Account toEntity() {
-        final Account account = new Account().setActive(active);
-        if (nonNull(id) && !"".equals(id)) account.setId(id);
-        if (nonNull(customer) && !"".equals(customer)) account.setCustomerId(customer);
-        if (nonNull(type) && !"".equals(type)) account.setType(toType(type));
-        return account;
+        return new Account()
+            .setActive(active)
+            .setId(id)
+            .setCustomerId(customer)
+            .setType(toType(type));
     }
 
     private Integer toType(String value) {
         switch(value) {
-            case PAYMENT: return 1;
-            case ESCROW: return 2;
+            case AccountType.PAYMENT: return 1;
+            case AccountType.ESCROW: return 2;
             default: return null;
         }
     }
 
-    private String toType(Integer value) {
+    private static String toType(Integer value) {
         switch(value) {
-            case 1: return PAYMENT;
-            case 2: return ESCROW;
+            case 1: return AccountType.PAYMENT;
+            case 2: return AccountType.ESCROW;
             default: return null;
         }
     }

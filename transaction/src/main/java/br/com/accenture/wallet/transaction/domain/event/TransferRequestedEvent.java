@@ -1,20 +1,16 @@
 package br.com.accenture.wallet.transaction.domain.event;
 
 public class TransferRequestedEvent {
-    private final String balanceUrl;
     private final String transferId;
     private String sourceAccount;
     private String targetAccount;
     private Double amount;
 
-    public TransferRequestedEvent(String transfer, String balanceUrl) {
+    public TransferRequestedEvent(String transfer) {
         this.transferId = transfer;
-        this.balanceUrl = balanceUrl;
     }
 
     public String getTransferId() { return transferId; }
-
-    public String getBalanceUrl() { return balanceUrl; }
 
     public String getSourceAccount() { return sourceAccount; }
     public TransferRequestedEvent withSourceAccount(String value) {

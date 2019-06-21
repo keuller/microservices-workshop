@@ -1,4 +1,4 @@
-package br.com.accenture.wallet.transaction.domain;
+package br.com.accenture.wallet.transaction.domain.model;
 
 public class TransferBean {
     private final String id;

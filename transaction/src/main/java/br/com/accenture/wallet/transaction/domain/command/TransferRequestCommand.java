@@ -15,15 +15,12 @@ public class TransferRequestCommand {
 
     private final Double amount;
 
-    private final String balanceUrl;
-
     public TransferRequestCommand(String transferId, String balanceUrl, TransferModel model) {
         if (isNull(transferId) || transferId.isBlank()) {
             throw new IllegalArgumentException("transfer ID cannot be empty");
         }
 
         this.transferId = transferId;
-        this.balanceUrl = balanceUrl;
         this.sourceAccount = model.getSourceAccount();
         this.targetAccount = model.getTargetAccount();
         this.amount = model.getAmount();
@@ -37,7 +34,5 @@ public class TransferRequestCommand {
     public String getTargetAccount() { return targetAccount; }
 
     public Double getAmount() { return amount; }
-
-    public String getBalanceUrl() { return balanceUrl; }
 
 }

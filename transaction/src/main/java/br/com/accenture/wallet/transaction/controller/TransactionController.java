@@ -1,6 +1,6 @@
 package br.com.accenture.wallet.transaction.controller;
 
-import br.com.accenture.wallet.transaction.domain.TransferBean;
+import br.com.accenture.wallet.transaction.domain.model.TransferBean;
 import br.com.accenture.wallet.transaction.domain.command.TransferRequestCommand;
 import br.com.accenture.wallet.transaction.domain.model.TransactionModel;
 import br.com.accenture.wallet.transaction.domain.model.TransferModel;
@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;

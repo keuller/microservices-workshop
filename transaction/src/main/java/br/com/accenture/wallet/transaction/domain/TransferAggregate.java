@@ -4,6 +4,7 @@ import br.com.accenture.wallet.transaction.domain.command.*;
 import br.com.accenture.wallet.transaction.domain.event.*;
 import br.com.accenture.wallet.transaction.domain.model.BalanceModel;
 import br.com.accenture.wallet.transaction.domain.model.BalanceOperationModel;
+import br.com.accenture.wallet.transaction.service.AccountClient;
 import br.com.accenture.wallet.transaction.service.TransactionService;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -26,11 +27,9 @@ public class TransferAggregate {
     @AggregateIdentifier
     private String transferId;
 
-    private String balanceUrl;
-
     private transient TransactionService transactionService;
 
-    private transient RestTemplate restClient;
+    private transient AccountClient accountClient;
 
     public TransferAggregate() {}
 
@@ -40,14 +39,13 @@ public class TransferAggregate {
     }
 
     @Autowired
-    public void setRestClient(RestTemplate restTempl) { this.restClient = restTempl; }
+    public void setAccountClient(AccountClient client) { this.accountClient = client; }
 
     @CommandHandler
     public TransferAggregate(TransferRequestCommand cmd) {
         this.transferId = cmd.getTransferId();
-        this.balanceUrl = cmd.getBalanceUrl();
 
-        final TransferRequestedEvent event = new TransferRequestedEvent(cmd.getTransferId(), balanceUrl)
+        final TransferRequestedEvent event = new TransferRequestedEvent(cmd.getTransferId())
             .withSourceAccount(cmd.getSourceAccount())
             .withTargetAccount(cmd.getTargetAccount())
             .withAmount(cmd.getAmount());
@@ -112,7 +110,6 @@ public class TransferAggregate {
     @EventSourcingHandler
     public void onRequested(TransferRequestedEvent event) {
         this.transferId = event.getTransferId();
-        this.balanceUrl = event.getBalanceUrl();
     }
 
     @EventSourcingHandler

@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -7,9 +7,9 @@
     </appender>
 
     <logger name="org.springframework.boot.web" level="warn" />
-    <logger name="org.springframework.orm" level="warn" />
+    <logger name="org.springframework.cloud" level="warn" />
+    <logger name="com.netflix.config" level="warn" />
     <logger name="org.apache.catalina" level="warn" />
-    <logger name="org.hibernate.jpa.internal" level="warn" />
 
     <root level="info">
         <appender-ref ref="STDOUT" />

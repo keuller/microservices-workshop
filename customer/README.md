@@ -1,11 +1,5 @@
 ## Customer Service
 
-### Executando Postgres localmente
-
-```bash
-docker run --rm --name=customer-db -e POSTGRES_USERNAME=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 postgres
-```
-
 ### Executando servico localmente
 
 ```bash
@@ -40,6 +34,12 @@ name | VARCHAR
 email | VARCHAR
 gender|int4
 birth_day|timestamp
+
+### Acessando Console H2
+
+```
+http://localhost:8080/h2-console
+```
 
 ### Load Testing
 

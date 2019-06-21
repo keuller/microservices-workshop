@@ -11,7 +11,7 @@ public class AccountModel {
     public String getId() {
         return id;
     }
-    public AccountModel setId(String value) {
+    public AccountModel withId(String value) {
         this.id = value;
         return this;
     }
@@ -19,8 +19,7 @@ public class AccountModel {
     public String getCustomer() {
         return customer;
     }
-
-    public AccountModel setCustomer(String customer) {
+    public AccountModel withCustomer(String customer) {
         this.customer = customer;
         return this;
     }
@@ -28,8 +27,7 @@ public class AccountModel {
     public String getType() {
         return type;
     }
-
-    public AccountModel setType(String type) {
+    public AccountModel withType(String type) {
         this.type = type;
         return this;
     }

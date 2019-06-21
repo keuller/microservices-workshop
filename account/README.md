@@ -3,7 +3,7 @@
 ### Executando Postgres localmente
 
 ```bash
-docker run --rm --name=account-db -e POSTGRES_USERNAME=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 postgres
+docker run --rm --name=wallet-db -e POSTGRES_USERNAME=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres
 ```
 
 ### Executando servico localmente
@@ -38,6 +38,8 @@ account_id | VARCHAR
 customer_id | VARCHAR
 type | Int4
 active | boolean
+balance | float64
+transaction_limit| float64
 created_at| timestamp
 
 ```

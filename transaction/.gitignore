@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 HELP.md
 /target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -30,3 +31,9 @@ build.sh
 ### VS Code ###
 .vscode/
 __pycache__
+=======
+.idea
+.DS_Store
+*.iml
+target/*
+>>>>>>> master

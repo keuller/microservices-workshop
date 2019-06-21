@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Scope;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -20,13 +19,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
-
 import static java.util.Objects.isNull;
-import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_SINGLETON;
 
 @Service
 @ApplicationScope
-@Scope(SCOPE_SINGLETON)
 public class AccountService {
     private final Logger logger = LoggerFactory.getLogger(AccountService.class);
 
@@ -43,9 +39,8 @@ public class AccountService {
     }
 
     public List<AccountModel> findAll() {
-        return accountRepository.findAll()
-            .stream()
-            .map(entity -> new AccountModel().fromEntity(entity))
+        return accountRepository.findAll().stream()
+            .map(AccountModel::fromEntity)
             .collect(Collectors.toList());
     }
 
@@ -54,7 +49,9 @@ public class AccountService {
         return findCustomer(model.getCustomer()).thenApply(customer -> {
             if (isNull(customer)) return null;
             logger.info("Criando uma conta para o cliente ".concat(customer.getName()));
-            final Account account = accountRepository.save(model.toEntity());
+            final Account account = accountRepository.save(model.toEntity()
+                .setBalance(0.0)
+                .setTransactionLimit(100.0));
             model.setId(account.getId());
             return model;
         });
@@ -63,7 +60,7 @@ public class AccountService {
     public Optional<AccountModel> getById(String value) {
         final Optional<Account> account = accountRepository.findById(value);
         if (account.isEmpty()) return Optional.empty();
-        return Optional.of(new AccountModel().fromEntity(account.get()));
+        return Optional.of(AccountModel.fromEntity(account.get()));
     }
 
     public void remove(String accountId) {

@@ -26,16 +26,14 @@ import static java.util.Objects.isNull;
 public class AccountService {
     private final Logger logger = LoggerFactory.getLogger(AccountService.class);
 
-    @Value("${customer.service}")
-    private String customerServiceUrl;
-
-    private final RestTemplate customerClient = new RestTemplate();
-
     private final AccountRepository accountRepository;
 
+    private final CustomerClient customerClient;
+
     @Autowired
-    public AccountService(AccountRepository repo) {
+    public AccountService(AccountRepository repo, CustomerClient client) {
         this.accountRepository = repo;
+        this.customerClient = client;
     }
 
     public List<AccountModel> findAll() {
@@ -47,7 +45,11 @@ public class AccountService {
     @Async
     public CompletableFuture<AccountModel> create(AccountModel model) {
         return findCustomer(model.getCustomer()).thenApply(customer -> {
-            if (isNull(customer)) return null;
+            if (isNull(customer)) {
+                logger.warn("Customer nao encontrado com ID {}", model.getCustomer());
+                return null;
+            }
+
             logger.info("Criando uma conta para o cliente ".concat(customer.getName()));
             final Account account = accountRepository.save(model.toEntity()
                 .setBalance(0.0)
@@ -70,7 +72,7 @@ public class AccountService {
     @Async
     public CompletableFuture<CustomerModel> findCustomer(String id) {
         return Failsafe.with(retryPolicy(id))
-            .getAsync(() -> customerClient.getForEntity(customerServiceUrl.concat(id), CustomerModel.class).getBody())
+            .getAsync(() -> customerClient.getCustomer(id))
             .exceptionally(err -> null);
     }
 
@@ -81,6 +83,32 @@ public class AccountService {
             .withMaxRetries(5)
             .withDelay(Duration.ofMillis(750))
             .onFailedAttempt(obj -> logger.error("Fail to get info from Customer with ID ".concat(id)));
+    }
+
+    public void activate(final String id) {
+        Optional<Account> account = accountRepository.findById(id);
+        if (account.isEmpty()) throw new IllegalArgumentException("Account does not exist with ID.");
+        final Account entity = account.get();
+        if (entity.isActive()) throw new IllegalArgumentException("Account has been activated.");
+        entity.setActive(true);
+        accountRepository.save(entity);
+    }
+
+    public void updateBalance(final BalanceModel model) {
+        Optional<Account> account = accountRepository.findById(model.getAccount());
+        if (account.isEmpty()) throw new IllegalArgumentException("Account does not exist with ID.");
+
+        final Account entity = account.get();
+        if (!entity.isActive()) throw new IllegalArgumentException("Account is inactive.");
+
+        Double currentBalance = entity.getBalance();
+        if ("credit".equals(model.getOperation()))
+            currentBalance = currentBalance + model.getValue();
+        else if ("debit".equalsIgnoreCase(model.getOperation()))
+            currentBalance = currentBalance - model.getValue();
+
+        entity.setBalance(currentBalance);
+        accountRepository.save(entity);
     }
 
 }

@@ -1,7 +1,6 @@
 package br.com.accenture.wallet.account.domain;
 
 import javax.validation.constraints.NotBlank;
-import static java.util.Objects.nonNull;
 
 public class AccountModel {
     private String id;
